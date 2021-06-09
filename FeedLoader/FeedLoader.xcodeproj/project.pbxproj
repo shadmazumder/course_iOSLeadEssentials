@@ -10,6 +10,7 @@
 		A15DD27526709681006A08D1 /* FeedLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A15DD26B26709680006A08D1 /* FeedLoader.framework */; };
 		A15DD27A26709681006A08D1 /* FeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DD27926709681006A08D1 /* FeedLoaderTests.swift */; };
 		A15DD27C26709681006A08D1 /* FeedLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A15DD26E26709680006A08D1 /* FeedLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A15DD2882670BD7D006A08D1 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DD2872670BD7D006A08D1 /* FeedItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		A15DD27426709681006A08D1 /* FeedLoaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeedLoaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15DD27926709681006A08D1 /* FeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderTests.swift; sourceTree = "<group>"; };
 		A15DD27B26709681006A08D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A15DD2872670BD7D006A08D1 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 		A15DD26126709680006A08D1 = {
 			isa = PBXGroup;
 			children = (
+				A15DD2872670BD7D006A08D1 /* FeedItem.swift */,
 				A15DD26D26709680006A08D1 /* FeedLoader */,
 				A15DD27826709681006A08D1 /* FeedLoaderTests */,
 				A15DD26C26709680006A08D1 /* Products */,
@@ -147,6 +150,7 @@
 				TargetAttributes = {
 					A15DD26A26709680006A08D1 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					A15DD27326709681006A08D1 = {
 						CreatedOnToolsVersion = 12.4;
@@ -194,6 +198,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A15DD2882670BD7D006A08D1 /* FeedItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +345,7 @@
 		A15DD28026709681006A08D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -357,6 +363,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobidevtalk.FeedLoader;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -364,6 +371,7 @@
 		A15DD28126709681006A08D1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -388,6 +396,7 @@
 		A15DD28326709681006A08D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 5TEA6ZSLNL;
@@ -406,6 +415,7 @@
 		A15DD28426709681006A08D1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 5TEA6ZSLNL;

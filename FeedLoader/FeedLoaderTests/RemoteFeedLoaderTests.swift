@@ -20,10 +20,10 @@ class RemoteFeedLoaderTests: XCTestCase {
     }
     
     struct HttpClient {
-        let requestedUrl: String?
+        let requestedUrl: URL?
     }
     
-    func test_init_loadNoData() {
+    func test_init_loadsNoData() {
     let client = HttpClient(requestedUrl: nil)
     
     _ = RemoteFeedLoader(client)
@@ -31,8 +31,8 @@ class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertNil(client.requestedUrl)
     }
     
-    func test_load_returnData() {
-        let client = HttpClient(requestedUrl: URL(string: "www.mobidevtalk.com")?.absoluteString)
+    func test_load_returnsData() {
+        let client = HttpClient(requestedUrl: URL(string: "www.mobidevtalk.com"))
         let remoteFeedLoader = RemoteFeedLoader(client)
     
         remoteFeedLoader.load()

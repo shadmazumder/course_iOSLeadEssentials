@@ -22,18 +22,15 @@ protocol HttpClient {
 
 class RemoteFeedLoaderTests: XCTestCase {
     func test_init_loadsNoData() {
-        let client = HttpClientSpy()
-        
-        _ = RemoteFeedLoader(client: client, url: URL(string: "www.mobidevtalk.com")!)
+        let (_, client) = makeSUT()
         
         XCTAssertNil(client.requestedUrl)
     }
     
     func test_load_returnsData() {
-        let client = HttpClientSpy()
-        let remoteFeedLoader = RemoteFeedLoader(client: client, url: URL(string: "www.mobidevtalk.com")!)
+        let (sut, client) = makeSUT()
         
-        remoteFeedLoader.load()
+        sut.load()
         
         XCTAssertNotNil(client.requestedUrl)
     }
@@ -45,5 +42,10 @@ class RemoteFeedLoaderTests: XCTestCase {
         func get(from requestedUrl: URL) {
             self.requestedUrl = requestedUrl
         }
+    }
+    
+    private func makeSUT() -> (sut: RemoteFeedLoader, client: HttpClientSpy){
+        let client = HttpClientSpy()
+        return(RemoteFeedLoader(client: client, url: URL(string: "www.mobidevtalk.com")!), client)
     }
 }

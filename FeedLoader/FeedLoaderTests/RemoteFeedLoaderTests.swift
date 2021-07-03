@@ -11,11 +11,6 @@ struct RemoteFeedLoader{
     let client: HttpClient
     let url: URL
     
-    init(client: HttpClient, url: URL) {
-        self.client = client
-        self.url = url
-    }
-    
     func load() {
         client.get(from: url)
     }

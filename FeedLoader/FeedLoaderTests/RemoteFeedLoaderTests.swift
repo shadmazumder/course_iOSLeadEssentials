@@ -18,7 +18,7 @@ class RemoteFeedLoaderTests: XCTestCase {
     func test_load_requestsDataFromURL() {
         let (sut, client) = makeSUT()
         
-        sut.load()
+        sut.load(){ _ in }
         
         XCTAssertEqual(client.requestedURLs.count, 1)
     }
@@ -27,8 +27,8 @@ class RemoteFeedLoaderTests: XCTestCase {
         let url = URL(string: "www.mobidevtalk.com")!
         let (sut, client) = makeSUT()
         
-        sut.load()
-        sut.load()
+        sut.load(){ _ in }
+        sut.load(){ _ in }
         
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
@@ -58,6 +58,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         func get(from requestedUrl: URL, completion: @escaping (Error)-> Void) {
             message.append((requestedUrl, completion))
         }
+        
         
         func complete(with error: Error, at index: Int = 0) {
             message[index].completion(error)

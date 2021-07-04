@@ -37,11 +37,10 @@ class RemoteFeedLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         client.error = NSError(domain: "Test", code: 0)
     
-        var capturedError: RemoteFeedLoader.Error?
-        sut.load{ error in capturedError = error}
+        var capturedError = [RemoteFeedLoader.Error]()
+        sut.load{ capturedError.append($0)}
         
-        XCTAssertEqual(capturedError, .connectivity)
-        
+        XCTAssertEqual(capturedError, [.connectivity])
     }
     
     // TODO: Validate if there is any benifit if we use protocol based rather than the complition

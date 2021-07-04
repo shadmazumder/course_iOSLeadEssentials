@@ -51,8 +51,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         var capturedError = [RemoteFeedLoader.Error]()
         sut.load{ capturedError.append($0)}
         
-        let httpErrorResponse = HTTPURLResponse(url: client.message[0].url, statusCode: 400, httpVersion: nil, headerFields: nil)
-        client.complete(with: httpErrorResponse!)
+        client.complete(with: 400)
         
         XCTAssertEqual(capturedError, [.invalidData])
     }
@@ -74,7 +73,11 @@ class RemoteFeedLoaderTests: XCTestCase {
             message[index].completion(nil, error)
         }
         
-        func complete(with httpResponse: HTTPURLResponse, at index: Int = 0) {
+        func complete(with httpStatusCode: Int, at index: Int = 0) {
+            let httpResponse = HTTPURLResponse(url: message[index].url,
+                                               statusCode: httpStatusCode,
+                                               httpVersion: nil,
+                                               headerFields: nil)
             message[index].completion(httpResponse, nil)
         }
     }

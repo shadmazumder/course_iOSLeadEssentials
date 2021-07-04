@@ -33,18 +33,18 @@ class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
+    // TODO: Validate if there is any benifit if we use protocol based rather than the complition
+    
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         var capturedError = [RemoteFeedLoader.Error]()
         sut.load{ capturedError.append($0)}
         
         let clientError = NSError(domain: "Test", code: 0)
-        client.complitions[0](clientError)
+        client.complete(with: clientError)
         
         XCTAssertEqual(capturedError, [.connectivity])
     }
-    
-    // TODO: Validate if there is any benifit if we use protocol based rather than the complition
 
     
     // MARK: - Utility
@@ -56,10 +56,16 @@ class RemoteFeedLoaderTests: XCTestCase {
             complitions.append(completion)
             requestedURLs.append(requestedUrl)
         }
+        
+        func complete(with error: Error, at index: Int = 0) {
+            complitions[index](error)
+        }
     }
     
     private func makeSUT(url: URL = URL(string: "www.mobidevtalk.com")!) -> (sut: RemoteFeedLoader, client: HttpClientSpy){
         let client = HttpClientSpy()
-        return(RemoteFeedLoader(url: url, client: client), client)
+        let remoteFeedLoader = RemoteFeedLoader(url: url, client: client)
+        
+        return(remoteFeedLoader, client)
     }
 }

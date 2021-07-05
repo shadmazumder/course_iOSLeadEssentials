@@ -33,8 +33,6 @@ class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
-    // TODO: Validate if there is any benifit if we use protocol based rather than the complition
-    
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         var capturedError = [RemoteFeedLoader.Error]()
@@ -60,6 +58,17 @@ class RemoteFeedLoaderTests: XCTestCase {
         }
     }
     
+    func test_load_deliversErrorOn200HttpResponseWithInvalidJson() {
+        let (sut, cliet) = makeSUT()
+        var captureError = [RemoteFeedLoader.Error]()
+        sut.load(completion: {captureError.append($0)})
+        
+        let invalidJson = Data("Invalid Json".utf8)
+        cliet.complete(with: 200, data: invalidJson)
+    
+        XCTAssertEqual(captureError, [.invalidData])
+    }
+    
     // MARK: - Utility
     private class HttpClientSpy: HttpClient {
         var message = [(url: URL, completion: (HTTPClientResult) -> Void)]()
@@ -77,7 +86,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             message[index].completion(.fail(error))
         }
         
-        func complete(with httpStatusCode: Int, at index: Int = 0) {
+        func complete(with httpStatusCode: Int, data: Data = Data(), at index: Int = 0) {
             let httpResponse = HTTPURLResponse(url: message[index].url,
                                                statusCode: httpStatusCode,
                                                httpVersion: nil,

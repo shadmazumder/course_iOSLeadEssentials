@@ -84,7 +84,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         client.complete(with: 200,
                         data: makeItemJson(items: [item1.json, item2.json]))
 
-        XCTAssertEqual(captureResult, [.success([])])
+        XCTAssertEqual(captureResult, [.success([item1.model, item2.model])])
     }
     
     // MARK: - Utility

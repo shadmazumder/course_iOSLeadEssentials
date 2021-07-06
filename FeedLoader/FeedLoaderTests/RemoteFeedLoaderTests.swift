@@ -82,7 +82,7 @@ class RemoteFeedLoaderTests: XCTestCase {
                                                statusCode: httpStatusCode,
                                                httpVersion: nil,
                                                headerFields: nil)
-            message[index].completion(.success(httpResponse!))
+            message[index].completion(.success(httpResponse!, data))
         }
     }
     

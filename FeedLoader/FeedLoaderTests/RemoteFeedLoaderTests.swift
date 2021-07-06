@@ -72,6 +72,21 @@ class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertEqual(captureResult, [.success([])])
     }
     
+    func test_load_deliversFeedItemsOn200HttpResponseWithJsonItems() {
+        let (sut, client) = makeSUT()
+        var captureResult = [RemoteFeedLoader.Result]()
+
+        let item1 = makeItem(id: UUID(), imageUrl: URL(string: "a-given-url.com")!)
+        let item2 = makeItem(id: UUID(), description: "A given description", imageUrl: URL(string: "another-given-url.com")!)
+        
+        sut.load(){captureResult.append($0)}
+        
+        client.complete(with: 200,
+                        data: makeItemJson(items: [item1.json, item2.json]))
+
+        XCTAssertEqual(captureResult, [.success([])])
+    }
+    
     // MARK: - Utility
     private class HttpClientSpy: HttpClient {
         var message = [(url: URL, completion: (HTTPClientResult) -> Void)]()
@@ -103,6 +118,23 @@ class RemoteFeedLoaderTests: XCTestCase {
         let remoteFeedLoader = RemoteFeedLoader(url: url, client: client)
         
         return(remoteFeedLoader, client)
+    }
+    
+    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageUrl: URL) -> (model: FeedItem, json: [String: Any]){
+        let item = FeedItem(id: id, description: description, location: location, imageUrl: imageUrl)
+        let json = [
+            "id": item.id.uuidString,
+            "description": item.description,
+            "location" : item.location,
+            "image": item.imageUrl.absoluteString
+        ].compactMapValues({$0}).reduce(into: [String: Any](), { $0[$1.key] = $1.value })
+        
+        return (item, json)
+    }
+    
+    private func makeItemJson(items: [[String: Any]]) -> Data {
+        let json = ["items" : items]
+        return try! JSONSerialization.data(withJSONObject: json)
     }
     
     private func expect(_ sut: RemoteFeedLoader, toCompleteWithError error: RemoteFeedLoader.Error, when action: ()->Void, file: StaticString = #file, line: UInt = #line ){

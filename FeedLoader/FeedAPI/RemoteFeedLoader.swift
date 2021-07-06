@@ -12,11 +12,6 @@ public enum HTTPClientResult {
     case fail(Error)
 }
 
-public enum Result: Equatable{
-    case success
-    case failure(RemoteFeedLoader.Error)
-}
-
 public protocol HttpClient {
     func get(from requestedUrl: URL, completion: @escaping (HTTPClientResult)-> Void)
 }
@@ -26,6 +21,11 @@ public struct RemoteFeedLoader{
     public enum Error: Swift.Error {
         case connectivity
         case invalidData
+    }
+    
+    public enum Result: Equatable{
+        case success([FeedItem])
+        case failure(Error)
     }
     
     private let url: URL

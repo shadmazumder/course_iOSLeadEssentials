@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A13D6CB32695D5E50002378A /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D6CB22695D5E50002378A /* HttpClient.swift */; };
+		A13D6CB72695D6380002378A /* FeedItemMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D6CB62695D6380002378A /* FeedItemMapper.swift */; };
 		A15DD2882670BD7D006A08D1 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DD2872670BD7D006A08D1 /* FeedItem.swift */; };
 		A15DD28C2670BE32006A08D1 /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DD28B2670BE32006A08D1 /* FeedLoader.swift */; };
 		A15DD29A2670C0A8006A08D1 /* FeedLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A15DD26B26709680006A08D1 /* FeedLoader.framework */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		A13D6CB22695D5E50002378A /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		A13D6CB62695D6380002378A /* FeedItemMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemMapper.swift; sourceTree = "<group>"; };
 		A15DD26B26709680006A08D1 /* FeedLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeedLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15DD26F26709680006A08D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A15DD2872670BD7D006A08D1 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				A1AD2A912690D78600183242 /* RemoteFeedLoader.swift */,
 				A13D6CB22695D5E50002378A /* HttpClient.swift */,
+				A13D6CB62695D6380002378A /* FeedItemMapper.swift */,
 			);
 			path = FeedAPI;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A15DD28C2670BE32006A08D1 /* FeedLoader.swift in Sources */,
+				A13D6CB72695D6380002378A /* FeedItemMapper.swift in Sources */,
 				A1AD2A922690D78600183242 /* RemoteFeedLoader.swift in Sources */,
 				A13D6CB32695D5E50002378A /* HttpClient.swift in Sources */,
 				A15DD2882670BD7D006A08D1 /* FeedItem.swift in Sources */,

@@ -7,8 +7,7 @@
 
 import Foundation
 
-public class RemoteFeedLoader{
-    
+public class RemoteFeedLoader: FeedLoader{
     public enum Error: Swift.Error {
         case connectivity
         case invalidData
@@ -24,7 +23,7 @@ public class RemoteFeedLoader{
         self.client = client
     }
     
-    public func load(completion: @escaping (Result)-> Void) {
+    public func load(completion : @escaping (LoadFeedResult<Error>)-> Void) {
         client.get(from: url) { [weak self] result in
             guard self != nil else {return}
             

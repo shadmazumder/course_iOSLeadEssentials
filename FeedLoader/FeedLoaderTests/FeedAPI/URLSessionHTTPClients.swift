@@ -9,7 +9,11 @@ import XCTest
 import FeedLoader
 
 protocol HTTPSession {
-    func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+    func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> HTTPSessionTask
+}
+
+protocol HTTPSessionTask {
+    func resume()
 }
 
 class URLSessionHTTPClient {
@@ -67,17 +71,17 @@ class URLSessionHTTPClientTests: XCTestCase {
     // MARK: - Helper Entity
     private class HTTPSessionSpy: HTTPSession {
         struct Stubs {
-            let dataTask: URLSessionDataTask
+            let dataTask: HTTPSessionTask
             let error: Error?
         }
         
         private var stubs = [URL: Stubs]()
         
-        func stub(url: URL, task: URLSessionDataTask = FakeURLSessionDataTask(), error: Error? = nil){
+        func stub(url: URL, task: HTTPSessionTask = FakeURLSessionDataTask(), error: Error? = nil){
             stubs[url] = Stubs(dataTask: task, error: error)
         }
         
-        func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> HTTPSessionTask {
             guard let stub = stubs[url] else {
                 fatalError("stub is missing for the url: \(url)")
             }
@@ -86,16 +90,14 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
     }
     
-    private class FakeURLSessionDataTask: URLSessionDataTask{
-        override init() {}
+    private class FakeURLSessionDataTask: HTTPSessionTask{
+        func resume() {}
     }
     
-    private class URLSessionDataTaskSpy: URLSessionDataTask{
+    private class URLSessionDataTaskSpy: HTTPSessionTask{
         var resumeCallcounter = 0
-
-        override init() {}
         
-        override func resume() {
+        func resume() {
             resumeCallcounter += 1
         }
     }

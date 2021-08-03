@@ -43,8 +43,11 @@ class URLSessionHTTPClientTests: XCTestCase {
         let session = URLSessionSpy()
         let error = NSError(domain: "Some Domain", code: 0)
         session.stub(url: url, error: error)
+        
         let sut = URLSessionHTTPClient(session: session)
-
+        
+        let exp = expectation(description: "Wait for completion")
+        
         sut.get(from: url){ result in
             switch result{
                 case let .fail(receivedError as NSError):
@@ -52,8 +55,9 @@ class URLSessionHTTPClientTests: XCTestCase {
             default:
                 XCTFail("Expected failure with \(error) got \(result) instead")
             }
+            exp.fulfill()
         }
-        
+        wait(for: [exp], timeout: 1)
     }
     
     // MARK: - Helper Entity

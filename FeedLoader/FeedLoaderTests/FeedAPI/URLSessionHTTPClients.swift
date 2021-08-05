@@ -21,7 +21,9 @@ class URLSessionHTTPClient {
         session.dataTask(with: url) { (data, response, error) in
             if let error = error{
                 completion(.fail(error))
-            }else{
+            }else if let data = data, let response = response as? HTTPURLResponse {
+                completion(.success(response, data))
+            } else {
                 completion(.fail(UnexpectedValueRepresntation()))
             }
         }.resume()
@@ -72,6 +74,26 @@ class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse(), error: anyNSError()))
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: anyHTTPURLResponse(), error: anyNSError()))
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse(), error: nil))
+    }
+    
+    func test_getFromURL_successedsOnHTTPURLResponseWithData() {
+        let requestedData = anyData()
+        let requestedResponse = anyHTTPURLResponse()
+        URLProtocolStub.stub(response: requestedResponse, data: requestedData, error: nil)
+        let exp = expectation(description: "Wait for success with Data")
+        
+        makeSUT().get(from: anyUrl()) { (result) in
+            switch result{
+            case let .success(receivedResponse, receivedData):
+                XCTAssertEqual(requestedData, receivedData)
+                XCTAssertEqual(requestedResponse.url, receivedResponse.url)
+                XCTAssertEqual(requestedResponse.statusCode, receivedResponse.statusCode)
+            default:
+                XCTFail("Was expecting successfull HTTP Response with data but received \(result)")
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1)
     }
     
     // MARK: - Helper Entity

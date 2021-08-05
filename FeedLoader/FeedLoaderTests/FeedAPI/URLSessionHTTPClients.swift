@@ -8,6 +8,8 @@
 import XCTest
 import FeedLoader
 
+struct UnexpectedValueRepresntation: Error {}
+
 class URLSessionHTTPClient {
     private let session: URLSession
     
@@ -16,9 +18,11 @@ class URLSessionHTTPClient {
     }
     
     func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void){
-        session.dataTask(with: url) { (_, _, error) in
+        session.dataTask(with: url) { (data, response, error) in
             if let error = error{
                 completion(.fail(error))
+            }else{
+                completion(.fail(UnexpectedValueRepresntation()))
             }
         }.resume()
     }
@@ -37,15 +41,14 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_getFromURL_failsOnRequestError() {
-        let url = anyUrl()
         let error = NSError(domain: "Some Domain", code: 0)
-        URLProtocolStub.stub(url: url, response: nil, data: nil, error: error)
+        URLProtocolStub.stub(response: nil, data: nil, error: error)
         
         let sut = makeSUT()
         
         let exp = expectation(description: "Wait for completion")
         
-        sut.get(from: url){ result in
+        sut.get(from: anyUrl()){ result in
             switch result{
                 case let .fail(receivedError as NSError):
                     XCTAssertEqual(error, receivedError)
@@ -71,6 +74,23 @@ class URLSessionHTTPClientTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    func test_getFromURL_failsOnAllNilValues() {
+        URLProtocolStub.stub(response: nil, data: nil, error: nil)
+        let exp = expectation(description: "Wait for fail result")
+        
+        makeSUT().get(from: anyUrl()) { result in
+            switch result{
+            case.fail:
+                break
+            default:
+                XCTFail("Was expecting fail but got \(result)")
+            }
+            exp.fulfill()
+        }
+    
+        wait(for: [exp], timeout: 1)
+    }
+    
     // MARK: - Helper Entity
     private func anyUrl() -> URL{
         return URL(string: "https://any-url.com")!
@@ -92,7 +112,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         private static var stub: Stub?
         private static var requestObserver: ((URLRequest) -> Void)?
         
-        static func stub(url: URL, response: URLResponse?, data: Data?, error: Error?){
+        static func stub(response: URLResponse?, data: Data?, error: Error?){
             stub = Stub(response: response, data: data, error: error)
         }
         

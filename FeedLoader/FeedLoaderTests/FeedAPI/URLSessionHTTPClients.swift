@@ -51,16 +51,16 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     // MARK: - Helper Entity
     private class URLProtocolStub: URLProtocol {
-        struct Stubs {
+        struct Stub {
             let response: URLResponse?
             let data: Data?
             let error: Error?
         }
         
-        private static var stubs = [URL: Stubs]()
+        private static var stub: Stub?
         
         static func stub(url: URL, response: URLResponse?, data: Data?, error: Error?){
-            stubs[url] = Stubs(response: response, data: data, error: error)
+            stub = Stub(response: response, data: data, error: error)
         }
         
         static func startInterceptingRequest(){
@@ -69,13 +69,11 @@ class URLSessionHTTPClientTests: XCTestCase {
         
         static func stopInterceptingRequest(){
             URLProtocol.unregisterClass(URLProtocolStub.self)
-            stubs = [:]
+            stub = nil
         }
         
         override class func canInit(with request: URLRequest) -> Bool {
-            guard let url = request.url else { return false }
-            
-            return stubs[url] != nil
+            return true
         }
         
         override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -83,17 +81,15 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
         
         override func startLoading() {
-            guard let url = request.url, let stub = URLProtocolStub.stubs[url] else { return }
-            
-            if let response = stub.response {
+            if let response = URLProtocolStub.stub?.response {
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             }
             
-            if let data = stub.data {
+            if let data = URLProtocolStub.stub?.data {
                 client?.urlProtocol(self, didLoad: data)
             }
             
-            if let error = stub.error {
+            if let error = URLProtocolStub.stub?.error {
                 client?.urlProtocol(self, didFailWithError: error)
             }
             

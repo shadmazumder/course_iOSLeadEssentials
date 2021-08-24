@@ -8,10 +8,10 @@
 import XCTest
 import FeedLoader
 
-struct UnexpectedValueRepresntation: Error {}
-
 class URLSessionHTTPClient: HTTPClient {
     private let session: URLSession
+    
+    struct UnexpectedValueRepresntation: Error {}
     
     init(session: URLSession = .shared) {
         self.session = session

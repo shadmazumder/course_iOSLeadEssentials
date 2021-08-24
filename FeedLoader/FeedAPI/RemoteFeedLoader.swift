@@ -15,9 +15,9 @@ public class RemoteFeedLoader: FeedLoader{
     
     public typealias Result = LoadFeedResult
     private let url: URL
-    private let client: HttpClient
+    private let client: HTTPClient
     
-    public init(url: URL, client: HttpClient) {
+    public init(url: URL, client: HTTPClient) {
         self.url = url
         self.client = client
     }

@@ -8,28 +8,6 @@
 import XCTest
 import FeedLoader
 
-class URLSessionHTTPClient: HTTPClient {
-    private let session: URLSession
-    
-    struct UnexpectedValueRepresntation: Error {}
-    
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-    
-    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void){
-        session.dataTask(with: url) { (data, response, error) in
-            if let error = error{
-                completion(.fail(error))
-            }else if let data = data, let response = response as? HTTPURLResponse {
-                completion(.success(response, data))
-            } else {
-                completion(.fail(UnexpectedValueRepresntation()))
-            }
-        }.resume()
-    }
-}
-
 class URLSessionHTTPClientTests: XCTestCase {
     
     override func setUp() {

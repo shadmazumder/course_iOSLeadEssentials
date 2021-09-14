@@ -140,6 +140,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         return HTTPURLResponse(url: anyUrl(), statusCode: 0, httpVersion: nil, headerFields: nil)!
     }
     
+    // MARK: -
     private class URLProtocolStub: URLProtocol {
         struct Stub {
             let response: URLResponse?
